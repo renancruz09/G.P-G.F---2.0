@@ -1,8 +1,8 @@
 import sqlite3
 import os
 
-# O banco será criado na raiz do projeto conforme a imagem
-DB_PATH = os.path.join(os.path.dirname(__file__), '..', 'banco.db')
+# O banco será criado na raiz do projeto
+DB_PATH = 'banco.db'
 
 def conectar():
     return sqlite3.connect(DB_PATH)
