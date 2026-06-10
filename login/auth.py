@@ -1,9 +1,5 @@
 import sqlite3
-import sys
 import os
-
-# Adiciona o caminho base para importar Models
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from Models.database import conectar
 
 def cadastrar_usuario():
@@ -43,20 +39,22 @@ def realizar_login():
     
     tentativas = 3
     while tentativas > 0:
-        usuario = input("Usuário: ").strip()
-        senha = input("Senha: ").strip()
+        usuario_digitado = input("Usuário: ").strip()
+        senha_digitada = input("Senha: ").strip()
         
         conn = conectar()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM usuarios WHERE usuario = ? AND senha = ?", (usuario, senha))
+        # Buscamos apenas o ID e o Nome
+        cursor.execute("SELECT id, usuario FROM usuarios WHERE usuario = ? AND senha = ?", (usuario_digitado, senha_digitada))
         resultado = cursor.fetchone()
         conn.close()
         
         if resultado:
-            print(f"\n✅ Login realizado com sucesso! Bem-vindo, {usuario}.")
-            return usuario
+            user_id, username = resultado # Aqui ele pega exatamente 2 valores
+            print(f"\n✅ Login realizado com sucesso! Bem-vindo, {username}.")
+            return user_id, username
         else:
             tentativas -= 1
             print(f"❌ Incorreto. Tentativas restantes: {tentativas}")
             
-    return None
+    return None, None

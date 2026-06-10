@@ -70,4 +70,7 @@ def calcular_financas(usuario_id):
     total_vendas = sum(v[0] * v[2] for v in vendas)
     total_custos = sum(v[0] * v[1] for v in vendas)
     lucro = total_vendas - total_custos
-    print(f"\nResumo: Vendas {formatar_moeda(total_vendas)} | Custos {formatar_moeda(total_custos)} | Lucro {formatar_moeda(lucro)}")
+    print(f"\n--- RESUMO FINANCEIRO ---")
+    print(f"Total Vendas: {formatar_moeda(total_vendas)}")
+    print(f"Total Custos: {formatar_moeda(total_custos)}")
+    print(f"Lucro Bruto:  {formatar_moeda(lucro)}")
