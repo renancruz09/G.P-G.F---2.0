@@ -1,7 +1,6 @@
 import sqlite3
 import os
 
-# O banco vai ser criado junto aos diretórios principais
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'banco.db')
 
 def conectar():
@@ -10,17 +9,7 @@ def conectar():
 def inicializar_banco():
     conn = conectar()
     cursor = conn.cursor()
-    
-    # Tabela de Usuários
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS usuarios (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            usuario TEXT UNIQUE NOT NULL,
-            senha TEXT NOT NULL
-        )
-    """)
-    
-    # Tabela de Vendas com Estoque e Custos
+    cursor.execute("CREATE TABLE IF NOT EXISTS usuarios (id INTEGER PRIMARY KEY AUTOINCREMENT, usuario TEXT UNIQUE NOT NULL, senha TEXT NOT NULL)")
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS vendas (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -33,11 +22,8 @@ def inicializar_banco():
             FOREIGN KEY (usuario_id) REFERENCES usuarios (id)
         )
     """)
-    
-    # Usuário admin padrão
     cursor.execute("SELECT COUNT(*) FROM usuarios")
     if cursor.fetchone()[0] == 0:
         cursor.execute("INSERT INTO usuarios (usuario, senha) VALUES (?, ?)", ("admin", "1234"))
-    
     conn.commit()
     conn.close()
