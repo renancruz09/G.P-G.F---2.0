@@ -1,57 +1,54 @@
 from Models.database import inicializar_banco
 from login.auth import realizar_login, cadastrar_usuario
-from CRUD.operacoes import criar_venda, ler_vendas, atualizar_venda, deletar_venda, calcular_financas
+from CRUD.operacoes import criar_venda, ler_vendas, deletar_venda, calcular_financas, gerenciar_produtos
 
 def menu_principal(usuario_id, username):
     while True:
-        print(f"\n{'='*30}")
-        print(f"SISTEMA G.P-G.F - USUÁRIO: {username}")
-        print(f"{'='*30}")
-        print("1. Cadastrar Venda")
-        print("2. Listar Vendas")
-        print("3. Editar Venda")
-        print("4. Excluir Venda")
-        print("5. Resumo Financeiro")
+        print(f"\n=== BEM-VINDO, {username} ===")
+        print("1. Gerenciar Produtos e Estoque")
+        print("2. Realizar Venda")
+        print("3. Listar Vendas Feitas")
+        print("4. Excluir uma Venda")
+        print("5. Ver Resumo de Lucros")
         print("6. Sair")
         
-        opcao = input("\nEscolha uma opção: ").strip()
+        opcao = input("\nEscolha uma opção: ")
         
         if opcao == '1':
-            criar_venda(usuario_id)
+            gerenciar_produtos(usuario_id)
         elif opcao == '2':
-            ler_vendas(usuario_id)
+            criar_venda(usuario_id)
         elif opcao == '3':
-            atualizar_venda(usuario_id)
+            ler_vendas(usuario_id)
         elif opcao == '4':
             deletar_venda(usuario_id)
         elif opcao == '5':
             calcular_financas(usuario_id)
         elif opcao == '6':
-            print(f"Até logo, {username}!")
+            print("Saindo do sistema...")
             break
         else:
-            print("❌ Opção inválida!")
+            print("Opção inválida!")
 
 if __name__ == "__main__":
     inicializar_banco()
     
     while True:
-        print("\n" + "#"*30)
-        print("   BEM-VINDO AO SISTEMA")
-        print("#"*30)
-        print("1. Login")
-        print("2. Primeiro Acesso (Cadastrar)")
-        print("3. Fechar Programa")
+        print("\n--- TELA INICIAL ---")
+        print("1. Fazer Login")
+        print("2. Criar Conta")
+        print("3. Fechar")
         
-        inicio = input("\nOpção: ").strip()
+        inicio = input("Opção: ")
         
         if inicio == '1':
-            uid, uname = realizar_login()
-            if uid and uname:
-                menu_principal(uid, uname)
-                break # Sai do loop inicial após o uso
+            resultado = realizar_login()
+            if resultado: 
+                usuario_id, nome = resultado
+                menu_principal(usuario_id, nome)
         elif inicio == '2':
             cadastrar_usuario()
         elif inicio == '3':
-            print("Encerrando sistema...")
             break
+        else:
+            print("Opção inválida!")
